@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connect"
-        android:textSize="80sp"
+        android:textSize="62sp"
          android:layout_centerInParent="true"
         android:textColor="#ffffff"
         />
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="An app for social beings"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textColor="#ffffff"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/main"
