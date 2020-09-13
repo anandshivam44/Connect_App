@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Button signUpButton;
     private CheckBox checkbox;
 
-    private int followers = 0, posts = 0;
+    private int followers = 0, posts = 0, following = 0;
 
     private AVLoadingIndicatorView avi;
 
@@ -61,6 +62,8 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         InitializeFields();
 
@@ -127,9 +130,12 @@ public class SignUpActivity extends AppCompatActivity {
                                 HashMap<String, Object> profileMap = new HashMap<>();
                                 profileMap.put("email", email);
                                 profileMap.put("followers", followers);
+                                profileMap.put("following", following);
+                                profileMap.put("about", "Hi there! I am using Connect.");
                                 profileMap.put("posts", posts);
                                 profileMap.put("uid", currentUserID);
                                 profileMap.put("name", username);
+
                                 RootRef.child("users").child(currentUserID).updateChildren(profileMap)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
