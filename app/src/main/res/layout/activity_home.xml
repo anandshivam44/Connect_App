@@ -18,7 +18,8 @@
         android:padding="8dp"
         android:layout_margin="12dp"
         app:cnb_unselectedColor="#050505"
-        app:cnb_menuResource="@menu/bottom_menu"/>
+        app:cnb_menuResource="@menu/bottom_menu"
+        />
 
 </RelativeLayout>
 

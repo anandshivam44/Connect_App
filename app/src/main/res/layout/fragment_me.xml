@@ -89,7 +89,6 @@
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/followers_no_text_view"
-                android:text="0"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
@@ -128,7 +127,6 @@
                 android:gravity="center"/>
             <TextView
                 android:id="@+id/following_no_text_view"
-                android:text="0"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
@@ -171,7 +169,6 @@
                     android:textSize="22sp" />
                 <TextView
                     android:id="@+id/posts_no_text_view"
-                    android:text="0"
                     android:textSize="20sp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"

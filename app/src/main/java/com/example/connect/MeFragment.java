@@ -1,5 +1,7 @@
 package com.example.connect;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +36,8 @@ public class MeFragment extends Fragment {
     private RelativeLayout postsRelativeLayout,followingRelativeLayout;
     private DatabaseReference usersRef;
     private String currentUserId;
+    private String retrieveMyProfileImage = "no_img";
+    private AlertDialog.Builder builder;
 
     public MeFragment() {
         // Required empty public constructor
@@ -52,13 +57,25 @@ public class MeFragment extends Fragment {
 
         InitializeFields();
 
-        UpdateProfile();
+        RetrieveUserProfileInfo();
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth.signOut();
-                SendUserToLoginActivity();
+                builder.setMessage("Do you want to log out ?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mAuth.signOut();
+                                SendUserToLoginActivity();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.show();
             }
         });
 
@@ -89,23 +106,13 @@ public class MeFragment extends Fragment {
         myProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if((snapshot.exists()) && (snapshot.hasChild("image"))){
-                            String ProfileImageUrl = snapshot.child("image").getValue().toString();
-
-                            Intent imageViewerIntent = new Intent(getContext(), ImageViewerActivity.class);
-                            imageViewerIntent.putExtra("imageUrl", ProfileImageUrl);
-                            startActivity(imageViewerIntent);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                if(retrieveMyProfileImage.equals("no_img")){
+                    Toast.makeText(getContext(),"No profile image available", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent imageViewerIntent = new Intent(getContext(), ImageViewerActivity.class);
+                    imageViewerIntent.putExtra("imageUrl", retrieveMyProfileImage);
+                    startActivity(imageViewerIntent);
+                }
             }
         });
 
@@ -113,13 +120,13 @@ public class MeFragment extends Fragment {
     }
 
 
-    private void UpdateProfile() {
+    private void RetrieveUserProfileInfo() {
         usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if((snapshot.exists()) && (snapshot.hasChild("image"))){
-                    String retrieveProfileImage = snapshot.child("image").getValue().toString();
-                    Picasso.get().load(retrieveProfileImage).into(myProfileImage);
+                    retrieveMyProfileImage = snapshot.child("image").getValue().toString();
+                    Picasso.get().load(retrieveMyProfileImage).into(myProfileImage);
                 }
                 if(snapshot.exists()) {
                     String name = snapshot.child("name").getValue().toString();
@@ -160,5 +167,7 @@ public class MeFragment extends Fragment {
         postsRelativeLayout = meFragmentView.findViewById(R.id.posts_relative_layout);
 
         myProfileImage = meFragmentView.findViewById(R.id.user_image);
+
+        builder = new AlertDialog.Builder(getContext(),  R.style.AlertDialogTheme);
     }
 }

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PeopleFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/peopleRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="PEOPLE"
-        android:textSize="50sp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="78dp"/>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
