@@ -98,22 +98,26 @@ public class PeopleProfileActivity extends AppCompatActivity {
 
     private void UnfollowUser(String peopleProfileUserId) {
         usersRef.child(currentUserId).child("followingIds").child(peopleProfileUserId).removeValue();
+        usersRef.child(peopleProfileUserId).child("followersIds").child(currentUserId).removeValue();
         // 1. Decrease number of followers of peopleProfileUserId by one
         // 2. Decrease number of following of currentUserId by one
         usersRef.child(peopleProfileUserId).child("followers").setValue(peopleProfileFollowersNum - 1);
         usersRef.child(currentUserId).child("following").setValue(myFollowingNum - 1);
-        myFollowingNum = myFollowingNum - 1;//because we have used addListenerForSingleValueEvent for myFollowingNum
+        myFollowingNum = myFollowingNum - 1; //because we have used addListenerForSingleValueEvent for myFollowingNum
     }
+
 
     private void FollowUser(String peopleProfileUserId) {
         usersRef.child(currentUserId).child("followingIds").child(peopleProfileUserId).setValue(peopleProfileUserId);
+        usersRef.child(peopleProfileUserId).child("followersIds").child(currentUserId).setValue(currentUserId);
         // 1. Increase number of followers of peopleProfileUserId by one
         // 2. Increase number of following of currentUserId by one
         usersRef.child(peopleProfileUserId).child("followers").setValue(peopleProfileFollowersNum + 1);
         usersRef.child(currentUserId).child("following").setValue(myFollowingNum + 1);
-        myFollowingNum = myFollowingNum + 1;//because we have used addListenerForSingleValueEvent for myFollowingNum
+        myFollowingNum = myFollowingNum + 1; //because we have used addListenerForSingleValueEvent for myFollowingNum
 
     }
+
 
     private void RetrieveUserProfileInfo() {
 

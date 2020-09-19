@@ -53,7 +53,6 @@ public class SignUpActivity extends AppCompatActivity {
     private AVLoadingIndicatorView avi;
 
     private static final int GalleryPic = 1;
-    private String currentUserID;
 
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;

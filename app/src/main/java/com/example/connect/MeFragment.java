@@ -32,11 +32,12 @@ public class MeFragment extends Fragment {
     private FirebaseAuth mAuth;
     public View meFragmentView;
     private CircleImageView myProfileImage;
-    public TextView logout, settings, myUsername, myAbout, myFollowersNo, myFollowingNo, myPostsNo;
+    public TextView logout, settings, myUsername, myAbout, myFollowersNo, myFollowingNo, myPostsNo, createPost;
     private RelativeLayout postsRelativeLayout,followingRelativeLayout;
     private DatabaseReference usersRef;
     private String currentUserId;
     private String retrieveMyProfileImage = "no_img";
+    private String name;
     private AlertDialog.Builder builder;
 
     public MeFragment() {
@@ -79,6 +80,16 @@ public class MeFragment extends Fragment {
             }
         });
 
+        createPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent createPostIntent = new Intent(getContext(), CreatePostActivity.class);
+                createPostIntent.putExtra("imageUrl", retrieveMyProfileImage);
+                createPostIntent.putExtra("userName", name);
+                startActivity(createPostIntent);
+            }
+        });
+
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,14 +103,6 @@ public class MeFragment extends Fragment {
             public void onClick(View view) {
                 Intent postsIntent = new Intent(getContext(), PostsActivity.class);
                 startActivity(postsIntent);
-            }
-        });
-
-        followingRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent followingIntent = new Intent(getContext(), FollowingActivity.class);
-                startActivity(followingIntent);
             }
         });
 
@@ -129,7 +132,7 @@ public class MeFragment extends Fragment {
                     Picasso.get().load(retrieveMyProfileImage).into(myProfileImage);
                 }
                 if(snapshot.exists()) {
-                    String name = snapshot.child("name").getValue().toString();
+                    name = snapshot.child("name").getValue().toString();
                     myUsername.setText(name);
                     String about = snapshot.child("about").getValue().toString();
                     myAbout.setText(about);
@@ -156,6 +159,7 @@ public class MeFragment extends Fragment {
 
     private void InitializeFields() {
         logout = meFragmentView.findViewById(R.id.log_out);
+        createPost = meFragmentView.findViewById(R.id.post);
         settings = meFragmentView.findViewById(R.id.settings);
         myUsername = meFragmentView.findViewById(R.id.user_name);
         myAbout = meFragmentView.findViewById(R.id.user_about);

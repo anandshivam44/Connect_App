@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="#1a66d2">
+    android:background="@drawable/gradient">
 
     <TextView
         android:id="@+id/main"
@@ -15,16 +15,6 @@
         android:textSize="62sp"
          android:layout_centerInParent="true"
         android:textColor="#ffffff"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="An app for social beings"
-        android:textSize="20sp"
-        android:textColor="#ffffff"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/main"
         />
 
 </RelativeLayout>

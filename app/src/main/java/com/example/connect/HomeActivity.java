@@ -29,6 +29,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        /* we have added  android:windowSoftInputMode="adjustPan"  in manifest file so that
+           bottom navigation bar does not come up while typing post message */
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mAuth = FirebaseAuth.getInstance();
@@ -54,9 +57,6 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.people:
                         fragment = new PeopleFragment();
-                        break;
-                    case R.id.post:
-                        fragment = new PostFragment();
                         break;
                     case R.id.me:
                         fragment = new MeFragment();

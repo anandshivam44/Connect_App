@@ -2,17 +2,15 @@ package com.example.connect;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -30,7 +28,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PeopleFragment extends Fragment {
 
     private RecyclerView peopleRecyclerView;
-    //private personAdapter adapter; // Create Object of the Adapter class
     private DatabaseReference usersRef;
     private View peopleFragmentView;
 
@@ -54,16 +51,6 @@ public class PeopleFragment extends Fragment {
 
         peopleRecyclerView = (RecyclerView) peopleFragmentView.findViewById(R.id.peopleRecyclerView);
         peopleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        peopleRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dy>0){
-                    Toast.makeText(getContext(),"Scrolled down", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 
         return peopleFragmentView;

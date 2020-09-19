@@ -200,6 +200,16 @@
                 android:textStyle="bold"
                 android:gravity="center"/>
             <TextView
+                android:id="@+id/post"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Post"
+                android:textSize="18sp"
+                android:textColor="#005086"
+                android:textStyle="bold"
+                android:gravity="center"/>
+            <TextView
                 android:id="@+id/settings"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -15,12 +15,6 @@
         app:cnb_iconColor="#649d66"
         />
     <item
-        android:id="@+id/post"
-        android:icon="@drawable/ic_add"
-        android:title="POST"
-        app:cnb_iconColor="#f5a31a"
-        />
-    <item
         android:id="@+id/me"
         android:icon="@drawable/ic_me"
         android:title="Me"
