@@ -103,7 +103,7 @@ public class PostsActivity extends AppCompatActivity {
                                     holder.myPostPeopleName.setText(retName);
                                     holder.myPostDateAndTime.setText(retDateAndTime);
                                     holder.myPostMessageText.setText(retText);
-                                    holder.myPostLikes.setText(retLikes + "❤");
+                                    holder.myPostLikes.setText(retLikes + " Likes");
 
 
                                     if(!retProfileImage.equals("no_img")){

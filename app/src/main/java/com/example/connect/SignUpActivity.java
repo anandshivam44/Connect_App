@@ -1,5 +1,8 @@
 package com.example.connect;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -23,23 +26,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput, nameInput;
-    private TextView email_text,password_text,name_text;
     private Button signUpButton;
     private CheckBox checkbox;
 
     private int followers = 0, posts = 0, following = 0;
 
-    private AVLoadingIndicatorView avi;
-
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
+
+    private ProgressDialog loadingBar;
+
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         InitializeFields();
 
-        avi.hide();
 
         mAuth = FirebaseAuth.getInstance();
         RootRef = FirebaseDatabase.getInstance().getReference();
@@ -89,18 +91,10 @@ public class SignUpActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(username)){
             Toast.makeText(this,"Please fill all of the above fields",Toast.LENGTH_SHORT).show();
         }else{
-            email_text.setVisibility(View.GONE);
-            emailInput.setVisibility(View.GONE);
-            emailInput.setText("");
-            password_text.setVisibility(View.GONE);
-            passwordInput.setVisibility(View.GONE);
-            passwordInput.setText("");
-            checkbox.setVisibility(View.GONE);
-            signUpButton.setVisibility(View.GONE);
-            name_text.setVisibility(View.GONE);
-            nameInput.setVisibility(View.GONE);
-            avi.setVisibility(View.VISIBLE);
-            avi.show();
+            loadingBar.setTitle("Loading...");
+            loadingBar.setMessage("Please wait, we creating your account.");
+            loadingBar.setCanceledOnTouchOutside(false);
+            loadingBar.show();
 
             mAuth.createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -124,7 +118,6 @@ public class SignUpActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    //SendUserToMainActivity();
                                                     Toast.makeText(SignUpActivity.this, "Account created successfully...", Toast.LENGTH_SHORT).show();
                                                 }else{
                                                     String message = task.getException().toString();
@@ -136,23 +129,20 @@ public class SignUpActivity extends AppCompatActivity {
                                 mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        email_text.setVisibility(View.VISIBLE);
-                                        emailInput.setVisibility(View.VISIBLE);
-                                        emailInput.setText("");
-                                        password_text.setVisibility(View.VISIBLE);
-                                        passwordInput.setVisibility(View.VISIBLE);
-                                        passwordInput.setText("");
-                                        checkbox.setVisibility(View.VISIBLE);
-                                        signUpButton.setVisibility(View.VISIBLE);
-                                        name_text.setVisibility(View.VISIBLE);
-                                        nameInput.setVisibility(View.VISIBLE);
-                                        avi.hide();
-                                        avi.setVisibility(View.GONE);
 
                                         if(task.isSuccessful()){
-                                            SendUserToLoginActivity();
-                                            Toast.makeText(SignUpActivity.this,"An E-mail has been sent to you. Please click the link given in it to verify your E-mail address.", Toast.LENGTH_LONG).show();
+                                            loadingBar.dismiss();
+                                            builder.setMessage("An E-mail has been sent to you. Please click the link given in it to verify your E-mail address.")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            SendUserToLoginActivity();
+                                                        }
+                                                    });
+                                            builder.show();
+
                                         }else{
+                                            loadingBar.dismiss();
                                             Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                         }
                                     }
@@ -160,20 +150,9 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                             }else {
-                                email_text.setVisibility(View.VISIBLE);
-                                emailInput.setVisibility(View.VISIBLE);
-                                emailInput.setText("");
-                                password_text.setVisibility(View.VISIBLE);
-                                passwordInput.setVisibility(View.VISIBLE);
-                                passwordInput.setText("");
-                                checkbox.setVisibility(View.VISIBLE);
-                                signUpButton.setVisibility(View.VISIBLE);
-                                name_text.setVisibility(View.VISIBLE);
-                                nameInput.setVisibility(View.VISIBLE);
-                                avi.hide();
-                                avi.setVisibility(View.GONE);
+                                loadingBar.dismiss();
                                 String message = task.getException().toString();
-                                Toast.makeText(SignUpActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Error: " + message, Toast.LENGTH_LONG).show();
                             }
 
 
@@ -197,11 +176,11 @@ public class SignUpActivity extends AppCompatActivity {
         passwordInput = (EditText) findViewById(R.id.user_password_input);
         signUpButton = (Button) findViewById(R.id.sign_up_button);
         checkbox = (CheckBox) findViewById(R.id.check_box);
-        avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
-        email_text = (TextView) findViewById(R.id.email_text);
-        password_text = (TextView) findViewById(R.id.password_text);
-        name_text = (TextView) findViewById(R.id.name_text);
         nameInput = (EditText) findViewById(R.id.user_name_input);
+
+        builder = new AlertDialog.Builder(SignUpActivity.this, R.style.AlertDialogTheme);
+
+        loadingBar = new ProgressDialog(SignUpActivity.this);
     }
 
 }

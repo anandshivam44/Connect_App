@@ -1,11 +1,13 @@
 package com.example.connect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,6 +18,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,17 +51,19 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         homeFragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
+
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
 
-        postsRef = FirebaseDatabase.getInstance().getReference().child("posts");
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        InitializeArrayList();
+        if(currentUser != null) {
 
-        homeRecyclerView = homeFragmentView.findViewById(R.id.homeRecyclerView);
+            homeRecyclerView = homeFragmentView.findViewById(R.id.homeRecyclerView);
 
+            postsRef = FirebaseDatabase.getInstance().getReference().child("posts");
+            currentUserID = mAuth.getCurrentUser().getUid();
 
-
+            InitializeArrayList();
 
 
             FirebaseRecyclerOptions<feedPost> options =
@@ -75,106 +80,105 @@ public class HomeFragment extends Fragment {
                             final String postPushIds = getRef(position).getKey();
 
 
-                                postsRef.child(postPushIds).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                            postsRef.child(postPushIds).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull final DataSnapshot snapshot) {
 
-                                        if (snapshot.exists() && myFollowingIds.contains(snapshot.child("uid").getValue().toString())) {
-
-
-                                            if (snapshot.hasChild("postMessageImage")) {
-                                                String postMessageImage = snapshot.child("postMessageImage").getValue().toString();
-                                                Picasso.get().load(postMessageImage).into(holder.eachPostMessageImage);
-                                            }else{
-                                                holder.eachPostMessageImage.setVisibility(View.GONE);
-                                            }
-
-                                            final String retName = snapshot.child("userName").getValue().toString();
-                                            final String retProfileImage = snapshot.child("postProfileImage").getValue().toString();
-                                            final String retDateAndTime = snapshot.child("dateAndTime").getValue().toString();
-                                            final String retText = snapshot.child("postMessageText").getValue().toString();
-                                            final String retLikes = snapshot.child("likes").getValue().toString();
-                                            final String retPostPushID = snapshot.child("postPushID").getValue().toString();
-                                            // ret = retrieve
-
-                                            final ArrayList<String> likedByList = new ArrayList<>();
-                                            postsRef.child(postPushIds).addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    if(snapshot.hasChild("likedBy")){
-                                                        DataSnapshot idsSnapshot = snapshot.child("likedBy");
-                                                        Iterable<DataSnapshot> followingIdsChildren = idsSnapshot.getChildren();
-                                                        for(DataSnapshot id : followingIdsChildren){
-                                                            String data = id.getValue().toString();
-                                                            likedByList.add(data);
-                                                        }
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                                }
-                                            });
-
-                                            holder.eachPostPeopleName.setText(retName);
-                                            holder.eachPostDateAndTime.setText(retDateAndTime);
-                                            holder.eachPostMessageText.setText(retText);
-                                            holder.eachPostLikes.setText(retLikes + "❤");
+                                    if (snapshot.exists() && myFollowingIds.contains(snapshot.child("uid").getValue().toString())) {
 
 
-                                            if(!retProfileImage.equals("no_img")){
-                                                Picasso.get().load(retProfileImage).into(holder.eachPostProfileImage);
-                                            }
-
-
-                                            holder.eachPostLikes.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-
-                                                    if(likedByList.contains(currentUserID)){
-                                                        postsRef.child(retPostPushID).child("likes")
-                                                                .setValue(String.valueOf( Integer.parseInt(retLikes)-1 ))
-                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        postsRef.child(retPostPushID).child("likedBy").child(currentUserID).removeValue();
-                                                                    }
-                                                                });
-
-                                                        //holder.eachPostLikes.setText(String.valueOf( Integer.parseInt(retLikes)-1 ) + "❤");
-
-                                                        likedByList.remove(currentUserID);
-                                                    }else {
-                                                        postsRef.child(retPostPushID).child("likes")
-                                                                .setValue(String.valueOf( Integer.parseInt(retLikes)+1 ))
-                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        postsRef.child(retPostPushID).child("likedBy").child(currentUserID).setValue(currentUserID);
-                                                                    }
-                                                                });
-
-                                                        //holder.eachPostLikes.setText(String.valueOf( Integer.parseInt(retLikes)+1 ) + "❤");
-
-                                                        likedByList.add(currentUserID);
-                                                    }
-                                                }
-                                            });
-
-
-
-                                        }else {
-                                            holder.eachPostConstraintLayout.setVisibility(View.GONE);
+                                        if (snapshot.hasChild("postMessageImage")) {
+                                            String postMessageImage = snapshot.child("postMessageImage").getValue().toString();
+                                            Picasso.get().load(postMessageImage).into(holder.eachPostMessageImage);
+                                        } else {
+                                            holder.eachPostMessageImage.setVisibility(View.GONE);
                                         }
 
+                                        final String retName = snapshot.child("userName").getValue().toString();
+                                        final String retProfileImage = snapshot.child("postProfileImage").getValue().toString();
+                                        final String retDateAndTime = snapshot.child("dateAndTime").getValue().toString();
+                                        final String retText = snapshot.child("postMessageText").getValue().toString();
+                                        final String retLikes = snapshot.child("likes").getValue().toString();
+                                        final String retPostPushID = snapshot.child("postPushID").getValue().toString();
+                                        // ret = retrieve
+
+                                        final ArrayList<String> likedByList = new ArrayList<>();
+                                        postsRef.child(postPushIds).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.hasChild("likedBy")) {
+                                                    DataSnapshot idsSnapshot = snapshot.child("likedBy");
+                                                    Iterable<DataSnapshot> followingIdsChildren = idsSnapshot.getChildren();
+                                                    for (DataSnapshot id : followingIdsChildren) {
+                                                        String data = id.getValue().toString();
+                                                        likedByList.add(data);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+                                        holder.eachPostPeopleName.setText(retName);
+                                        holder.eachPostDateAndTime.setText(retDateAndTime);
+                                        holder.eachPostMessageText.setText(retText);
+                                        holder.eachPostLikes.setText(retLikes + " Likes");
+
+
+                                        if (!retProfileImage.equals("no_img")) {
+                                            Picasso.get().load(retProfileImage).into(holder.eachPostProfileImage);
+                                        }
+
+
+                                        holder.eachPostLikes.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+
+                                                if (likedByList.contains(currentUserID)) {
+                                                    postsRef.child(retPostPushID).child("likes")
+                                                            .setValue(String.valueOf(Integer.parseInt(retLikes) - 1))
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    postsRef.child(retPostPushID).child("likedBy").child(currentUserID).removeValue();
+                                                                }
+                                                            });
+
+                                                    //holder.eachPostLikes.setText(String.valueOf( Integer.parseInt(retLikes)-1 ) + "❤");
+
+                                                    likedByList.remove(currentUserID);
+                                                } else {
+                                                    postsRef.child(retPostPushID).child("likes")
+                                                            .setValue(String.valueOf(Integer.parseInt(retLikes) + 1))
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    postsRef.child(retPostPushID).child("likedBy").child(currentUserID).setValue(currentUserID);
+                                                                }
+                                                            });
+
+                                                    //holder.eachPostLikes.setText(String.valueOf( Integer.parseInt(retLikes)+1 ) + "❤");
+
+                                                    likedByList.add(currentUserID);
+                                                }
+                                            }
+                                        });
+
+
+                                    } else {
+                                        holder.eachPostConstraintLayout.setVisibility(View.GONE);
                                     }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                }
 
-                                    }
-                                });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                             //}
 
                         }
@@ -189,9 +193,19 @@ public class HomeFragment extends Fragment {
             homeRecyclerView.setAdapter(adapter);
             adapter.startListening();
 
+        }else {
+            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
+            startActivity(loginIntent);
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+        }
+
 
         return homeFragmentView;
     }
+
 
     private void InitializeArrayList() {
         myFollowingIds = new ArrayList<>();
@@ -206,6 +220,8 @@ public class HomeFragment extends Fragment {
                         String data = id.getValue().toString();
                         myFollowingIds.add(data);
                     }
+                }else {
+                    Toast.makeText(getContext(),"Follow some people to start seeing their posts",Toast.LENGTH_LONG).show();
                 }
             }
 

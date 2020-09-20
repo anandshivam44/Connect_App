@@ -3,6 +3,9 @@ package com.example.connect;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -27,21 +30,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.wang.avi.AVLoadingIndicatorView;
-
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextView signUp, lets_connect, email_text, password_text, sign_up_label, or_text_label;
+    private TextView signUp;
     private CheckBox checkBoxLogin;
     private EditText passwordInput, emailInput;
     private Button signInButton;
-    private View separator1,separator2;
+
+    private ProgressDialog loadingBar;
 
     private FirebaseAuth mAuth;
     private DatabaseReference UsersRef;
 
-    private AVLoadingIndicatorView avi;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,31 +88,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        avi.hide();
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+
     }
+
 
     private void InitializeFields() {
         signUp = (TextView) findViewById(R.id.sign_up);
-        lets_connect = (TextView) findViewById(R.id.lets_connect);
-        email_text = (TextView) findViewById(R.id.email_text);
-        password_text = (TextView) findViewById(R.id.password_text);
-        sign_up_label = (TextView) findViewById(R.id.sign_up_label);
-
-        or_text_label = (TextView) findViewById(R.id.or_text_label);
-        separator1 = (View) findViewById(R.id.separator1);
-        separator2 = (View) findViewById(R.id.separator2);
-
-
         checkBoxLogin = (CheckBox) findViewById(R.id.check_box_login);
-
         emailInput = (EditText) findViewById(R.id.user_email_input);
         passwordInput = (EditText) findViewById(R.id.user_password_input);
-
         signInButton = (Button) findViewById(R.id.sign_in_button);
 
-        avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
+        loadingBar = new ProgressDialog(LoginActivity.this);
+
+        builder = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialogTheme);
     }
 
 
@@ -124,21 +121,10 @@ public class LoginActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
             Toast.makeText(this,"Please fill e-mail and password",Toast.LENGTH_SHORT).show();
         }else {
-            or_text_label.setVisibility(View.GONE);
-            separator1.setVisibility(View.GONE);
-            separator2.setVisibility(View.GONE);
-            signUp.setVisibility(View.GONE);
-            sign_up_label.setVisibility(View.GONE);
-            email_text.setVisibility(View.GONE);
-            emailInput.setVisibility(View.GONE);
-            emailInput.setText("");
-            password_text.setVisibility(View.GONE);
-            passwordInput.setVisibility(View.GONE);
-            passwordInput.setText("");
-            checkBoxLogin.setVisibility(View.GONE);
-            signInButton.setVisibility(View.GONE);
-            avi.show();
-            lets_connect.setText("Signing in...");
+            loadingBar.setTitle("Loading...");
+            loadingBar.setMessage("Verifying your email and password, please wait.");
+            loadingBar.setCanceledOnTouchOutside(false);
+            loadingBar.show();
 
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -163,20 +149,34 @@ public class LoginActivity extends AppCompatActivity {
 
                                                             if(mAuth.getCurrentUser().isEmailVerified()){
                                                                 SendUserToHomeActivity();
-                                                                Toast.makeText(LoginActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
                                                                 finish();
                                                             }else{
-                                                                Toast.makeText(LoginActivity.this, "Please verify your E-mail address first.", Toast.LENGTH_LONG).show();
-                                                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if(task.isSuccessful()){
-                                                                            Toast.makeText(LoginActivity.this, "Verification E-mail sent successfully...", Toast.LENGTH_SHORT).show();
-                                                                        }else{
-                                                                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                                                        }
-                                                                    }
-                                                                });
+                                                                builder.setMessage("Your email address is not verified yet. Do you want us to resend verification link to your email address?")
+                                                                        .setCancelable(true)
+                                                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog, int id) {
+
+                                                                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                        if(task.isSuccessful()){
+                                                                                            Toast.makeText(LoginActivity.this, "Verification E-mail sent successfully...", Toast.LENGTH_SHORT).show();
+                                                                                        }else{
+                                                                                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                            }
+                                                                        })
+                                                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                                dialog.cancel();
+                                                                            }
+                                                                        });
+                                                                builder.show();
+
+
                                                             }
 
 
@@ -192,24 +192,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             } else {
+                                loadingBar.dismiss();
                                 String message = task.getException().toString();
                                 Toast.makeText(LoginActivity.this, "Error: " + message, Toast.LENGTH_LONG).show();
                             }
-                            or_text_label.setVisibility(View.VISIBLE);
-                            separator1.setVisibility(View.VISIBLE);
-                            separator2.setVisibility(View.VISIBLE);
-                            signUp.setVisibility(View.VISIBLE);
-                            sign_up_label.setVisibility(View.VISIBLE);
-                            email_text.setVisibility(View.VISIBLE);
-                            emailInput.setVisibility(View.VISIBLE);
-                            emailInput.setText("");
-                            password_text.setVisibility(View.VISIBLE);
-                            passwordInput.setVisibility(View.VISIBLE);
-                            passwordInput.setText("");
-                            checkBoxLogin.setVisibility(View.VISIBLE);
-                            signInButton.setVisibility(View.VISIBLE);
-                            avi.hide();
-                            lets_connect.setText("Let's Connect");
+                           // loadingBar.dismiss();
                         }
                     });
         }

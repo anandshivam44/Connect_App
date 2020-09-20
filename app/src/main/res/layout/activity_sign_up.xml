@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:indicatorColor="#cf1b1b"
-        android:layout_centerInParent="true"
-        app:indicatorName="BallSpinFadeLoaderIndicator"
-        android:visibility="gone"/>
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="25dp"
         android:text="User Name (Public)"
         android:textColor="@android:color/black"
         android:textSize="16sp"
@@ -32,23 +30,27 @@
         android:id="@+id/user_name_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/name_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/edit_text_bg"
         android:padding="12dp"
-        android:textSize="16sp"
-        android:layout_below="@+id/name_text" />
+        android:textSize="18sp"/>
 
 
     <TextView
         android:id="@+id/email_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user_name_input"
-        android:layout_marginStart="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="25dp"
         android:text="Email"
         android:textColor="@android:color/black"
         android:textSize="16sp"
@@ -58,13 +60,15 @@
         android:id="@+id/user_email_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/email_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/edit_text_bg"
         android:padding="12dp"
-        android:textSize="16sp"
-        android:layout_below="@+id/email_text"
+        android:textSize="18sp"
         android:inputType="textEmailAddress"/>
 
 
@@ -72,51 +76,60 @@
         android:id="@+id/password_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/user_email_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="25dp"
         android:text="Password"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_below="@id/user_email_input" />
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/user_password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/password_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/edit_text_bg"
         android:padding="12dp"
-        android:textSize="16sp"
-        android:inputType="textPassword"
-        android:layout_below="@+id/password_text" />
-    
+        android:textSize="18sp"
+        android:inputType="textPassword"/>
+
     <CheckBox
         android:id="@+id/check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/user_password_input"
+        app:layout_constraintStart_toStartOf="parent"
         android:text="Show Password"
-        android:layout_below="@+id/user_password_input"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"/>
 
     <Button
         android:id="@+id/sign_up_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/check_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/button_bg"
         android:text="Create Account"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/check_box"/>
+        android:textStyle="bold"/>
 
 
-</RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

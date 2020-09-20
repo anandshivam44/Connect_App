@@ -101,7 +101,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="#1a66d2"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:clickable="true"
                 android:focusable="true"
                 android:layout_marginStart="5dp"
