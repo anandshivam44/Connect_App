@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +22,11 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PeopleProfileActivity extends AppCompatActivity {
+
     private CircleImageView peopleProfileImage;
     private TextView peopleProfileName, peopleProfileAbout, peopleProfileFollowers, peopleProfileFollowing, peopleProfilePosts;
     private Button peopleProfileFollowButton, peopleProfileUnfollowButton;
+    private RelativeLayout postsRelativeLayout, followingRelativeLayout;
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
@@ -73,6 +76,24 @@ public class PeopleProfileActivity extends AppCompatActivity {
                     imageViewerIntent.putExtra("imageUrl", retrieveProfileImage);
                     startActivity(imageViewerIntent);
                 }
+            }
+        });
+
+        followingRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent followingIntent = new Intent(PeopleProfileActivity.this, FollowingActivity.class);
+                followingIntent.putExtra("following_user_id", peopleProfileUserId);
+                startActivity(followingIntent);
+            }
+        });
+
+        postsRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent postsIntent = new Intent(PeopleProfileActivity.this, PostsActivity.class);
+                postsIntent.putExtra("userId", peopleProfileUserId);
+                startActivity(postsIntent);
             }
         });
 
@@ -182,5 +203,7 @@ public class PeopleProfileActivity extends AppCompatActivity {
         peopleProfilePosts = findViewById(R.id.people_profile_posts_no_text_view);
         peopleProfileFollowButton = findViewById(R.id.people_profile_follow_button);
         peopleProfileUnfollowButton = findViewById(R.id.people_profile_unfollow_button);
+        postsRelativeLayout = findViewById(R.id.people_profile_posts_relative_layout);
+        followingRelativeLayout = findViewById(R.id.people_profile_following_relative_layout);
     }
 }

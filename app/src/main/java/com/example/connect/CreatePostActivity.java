@@ -164,24 +164,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
     }
 
-//    private void getUserName() {
-//
-//        usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    userName = snapshot.child("name").getValue().toString();
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//
-//        });
-//
-//    }
-
     private void InitializeFields() {
         CreatePostToolbar = findViewById(R.id.create_post_toolbar);
         setSupportActionBar(CreatePostToolbar);

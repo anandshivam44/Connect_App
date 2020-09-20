@@ -3,18 +3,16 @@ package com.example.connect;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -60,6 +58,15 @@ public class MeFragment extends Fragment {
 
         RetrieveUserProfileInfo();
 
+        followingRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent followingIntent = new Intent(getContext(),FollowingActivity.class);
+                followingIntent.putExtra("following_user_id", currentUserId);
+                startActivity(followingIntent);
+            }
+        });
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +109,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent postsIntent = new Intent(getContext(), PostsActivity.class);
+                postsIntent.putExtra("userId",currentUserId);
                 startActivity(postsIntent);
             }
         });
@@ -172,6 +180,6 @@ public class MeFragment extends Fragment {
 
         myProfileImage = meFragmentView.findViewById(R.id.user_image);
 
-        builder = new AlertDialog.Builder(getContext(),  R.style.AlertDialogTheme);
+        builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
     }
 }

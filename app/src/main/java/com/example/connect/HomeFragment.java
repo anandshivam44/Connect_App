@@ -1,29 +1,20 @@
 package com.example.connect;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -82,9 +73,7 @@ public class HomeFragment extends Fragment {
                         protected void onBindViewHolder(@NonNull final HomeFragment.HomeViewHolder holder, int position, @NonNull feedPost model) {
 
                             final String postPushIds = getRef(position).getKey();
-                            //final String[] retImage = {"default_image"};
 
-                            //myFollowingIds.contains()
 
                                 postsRef.child(postPushIds).addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -139,7 +128,7 @@ public class HomeFragment extends Fragment {
                                             }
 
 
-                                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                            holder.eachPostLikes.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
 
@@ -199,8 +188,6 @@ public class HomeFragment extends Fragment {
                     };
             homeRecyclerView.setAdapter(adapter);
             adapter.startListening();
-
-        //}
 
 
         return homeFragmentView;
