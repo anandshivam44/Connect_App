@@ -220,8 +220,6 @@ public class HomeFragment extends Fragment {
                         String data = id.getValue().toString();
                         myFollowingIds.add(data);
                     }
-                }else {
-                    Toast.makeText(getContext(),"Follow some people to start seeing their posts",Toast.LENGTH_LONG).show();
                 }
             }
 
