@@ -30,7 +30,7 @@ public class MeFragment extends Fragment {
     private FirebaseAuth mAuth;
     public View meFragmentView;
     private CircleImageView myProfileImage;
-    public TextView logout, settings, myUsername, myAbout, myFollowersNo, myFollowingNo, myPostsNo, createPost;
+    public TextView logout, settings, myUsername, myAbout, myFollowersNo, myFollowingNo, myPostsNo, createPost, connectionMessage;
     private RelativeLayout postsRelativeLayout,followingRelativeLayout;
     private DatabaseReference usersRef;
     private String currentUserId;
@@ -150,6 +150,10 @@ public class MeFragment extends Fragment {
                     myFollowingNo.setText(following);
                     String posts = snapshot.child("posts").getValue().toString();
                     myPostsNo.setText(posts);
+
+                    createPost.setVisibility(View.VISIBLE);
+                    settings.setVisibility(View.VISIBLE);
+                    connectionMessage.setVisibility(View.GONE);
                 }
             }
 
@@ -174,6 +178,7 @@ public class MeFragment extends Fragment {
         myFollowersNo = meFragmentView.findViewById(R.id.followers_no_text_view);
         myFollowingNo = meFragmentView.findViewById(R.id.following_no_text_view);
         myPostsNo = meFragmentView.findViewById(R.id.posts_no_text_view);
+        connectionMessage = meFragmentView.findViewById(R.id.connection_message);
 
         followingRelativeLayout = meFragmentView.findViewById(R.id.following_relative_layout);
         postsRelativeLayout = meFragmentView.findViewById(R.id.posts_relative_layout);
