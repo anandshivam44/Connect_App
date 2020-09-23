@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -109,7 +109,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent postsIntent = new Intent(getContext(), PostsActivity.class);
-                postsIntent.putExtra("userId",currentUserId);
+               // postsIntent.putExtra("userId",currentUserId);
                 startActivity(postsIntent);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -80,10 +80,10 @@ public class PeopleFragment extends Fragment {
 
                                 if(snapshot.exists()){
 
-                                    if (snapshot.hasChild("image")){
-                                        retImage[0] = snapshot.child("image").getValue().toString();
-                                        Picasso.get().load(retImage[0]).into(holder.eachPeopleProfileImage);
-                                    }
+//                                    if (snapshot.hasChild("image")){
+//                                        retImage[0] = snapshot.child("image").getValue().toString();
+//                                        Picasso.get().load(retImage[0]).into(holder.eachPeopleProfileImage);
+//                                    }
 
                                     final String retName = snapshot.child("name").getValue().toString();
                                     final String retFollowers = String.valueOf(snapshot.child("followers").getValue());
@@ -132,13 +132,13 @@ public class PeopleFragment extends Fragment {
 
     public static class PeopleViewHolder extends RecyclerView.ViewHolder{
 
-        CircleImageView eachPeopleProfileImage;
+        //CircleImageView eachPeopleProfileImage;
         TextView eachPeopleName, eachPeopleFollower;
 
         public PeopleViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            eachPeopleProfileImage = itemView.findViewById(R.id.each_people_image);
+            //eachPeopleProfileImage = itemView.findViewById(R.id.each_people_image);
             eachPeopleName = itemView.findViewById(R.id.each_people_name_text_view);
             eachPeopleFollower = itemView.findViewById(R.id.each_people_followers_text_view);
         }

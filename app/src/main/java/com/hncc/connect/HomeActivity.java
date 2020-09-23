@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

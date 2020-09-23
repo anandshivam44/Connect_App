@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -78,10 +79,10 @@ public class FollowingActivity extends AppCompatActivity {
 
                                 if(snapshot.exists() && myFollowingIds.contains(snapshot.child("uid").getValue().toString())){
 
-                                    if (snapshot.hasChild("image")){
-                                        retImage[0] = snapshot.child("image").getValue().toString();
-                                        Picasso.get().load(retImage[0]).into(holder.eachPeopleProfileImage);
-                                    }
+//                                    if (snapshot.hasChild("image")){
+//                                        retImage[0] = snapshot.child("image").getValue().toString();
+//                                        Picasso.get().load(retImage[0]).into(holder.eachPeopleProfileImage);
+//                                    }
 
                                     final String retName = snapshot.child("name").getValue().toString();
                                     final String retFollowers = String.valueOf(snapshot.child("followers").getValue());
@@ -101,8 +102,13 @@ public class FollowingActivity extends AppCompatActivity {
                                         }
                                     });
 
-                                }else {
+                                } else {
+                                    holder.eachPeopleFollower.setVisibility(View.GONE);
+                                    holder.eachPeopleName.setVisibility(View.GONE);
                                     holder.eachPeopleLayout.setVisibility(View.GONE);
+
+
+
                                 }
 
                             }
@@ -132,14 +138,14 @@ public class FollowingActivity extends AppCompatActivity {
 
     public static class followingPeopleViewHolder extends RecyclerView.ViewHolder{
 
-        CircleImageView eachPeopleProfileImage;
+        //CircleImageView eachPeopleProfileImage;
         TextView eachPeopleName, eachPeopleFollower;
-        ConstraintLayout eachPeopleLayout;
+        RelativeLayout eachPeopleLayout;
 
         public followingPeopleViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            eachPeopleProfileImage = itemView.findViewById(R.id.each_people_image);
+            //eachPeopleProfileImage = itemView.findViewById(R.id.each_people_image);
             eachPeopleName = itemView.findViewById(R.id.each_people_name_text_view);
             eachPeopleFollower = itemView.findViewById(R.id.each_people_followers_text_view);
             eachPeopleLayout = itemView.findViewById(R.id.each_people_constraint_layout);

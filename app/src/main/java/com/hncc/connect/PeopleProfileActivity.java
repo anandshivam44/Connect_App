@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,14 +88,14 @@ public class PeopleProfileActivity extends AppCompatActivity {
             }
         });
 
-        postsRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent postsIntent = new Intent(PeopleProfileActivity.this, PostsActivity.class);
-                postsIntent.putExtra("userId", peopleProfileUserId);
-                startActivity(postsIntent);
-            }
-        });
+//        postsRelativeLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent postsIntent = new Intent(PeopleProfileActivity.this, PostsActivity.class);
+//                postsIntent.putExtra("userId", peopleProfileUserId);
+//                startActivity(postsIntent);
+//            }
+//        });
 
         peopleProfileFollowButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import org.junit.Test;
 

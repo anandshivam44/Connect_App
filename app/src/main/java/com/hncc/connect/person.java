@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 public class person {
 

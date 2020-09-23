@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,15 +15,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/followingsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="5dp"
+        android:layout_below="@+id/followings_toolbar"
         app:stackFromEnd="true"
         app:reverseLayout="true"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/followings_toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layoutManager="LinearLayoutManager" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

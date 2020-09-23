@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

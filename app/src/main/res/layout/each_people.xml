@@ -12,31 +12,24 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp">
     
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/each_people_constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="6dp"
         android:background="#eeeeee">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/each_people_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/profile_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/each_people_details"
-            app:civ_border_width="1dp"
-            app:civ_border_color="#e36387"/>
-       <LinearLayout
-           android:id="@+id/each_people_details"
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:orientation="vertical"
-           app:layout_constraintStart_toEndOf="@+id/each_people_image"
-           app:layout_constraintTop_toTopOf="parent"
-           app:layout_constraintEnd_toEndOf="parent">
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/each_people_image"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:src="@drawable/profile_image"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/each_people_details"-->
+<!--            app:civ_border_width="1dp"-->
+<!--            app:civ_border_color="#e36387"/>-->
+
         <TextView
             android:id="@+id/each_people_name_text_view"
             android:layout_width="match_parent"
@@ -52,10 +45,11 @@
                android:layout_height="wrap_content"
                android:textColor="@android:color/black"
                android:textSize="15sp"
-               android:layout_marginStart="5dp" />
-       </LinearLayout>
+               android:layout_marginStart="5dp"
+               android:layout_below="@id/each_people_name_text_view"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
 

@@ -1,4 +1,4 @@
-package com.example.connect;
+package com.hncc.connect;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -34,7 +34,7 @@ public class PostsActivity extends AppCompatActivity {
     private Toolbar MyPostToolbar;
     private FirebaseAuth mAuth;
     private String currentUserId;
-    private String whosePostsUserId;
+    //private String whosePostsUserId;
     private DatabaseReference postsRef;
     private RecyclerView myPostsRecyclerView;
 
@@ -48,8 +48,8 @@ public class PostsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
 
-        Intent intent = getIntent();
-        whosePostsUserId = intent.getExtras().get("userId").toString();
+//        Intent intent = getIntent();
+//        whosePostsUserId = intent.getExtras().get("userId").toString();
 
         InitializeFields();
 
@@ -81,36 +81,41 @@ public class PostsActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull final DataSnapshot snapshot) {
 
-                                if (snapshot.exists() && snapshot.child("uid").getValue().toString().equals(whosePostsUserId)) {
+                                if (snapshot.exists()) {
+
+                                    if(snapshot.hasChild("uid") && snapshot.hasChild("dateAndTime") && snapshot.hasChild("likes") &&
+                                            snapshot.hasChild("postMessageText") && snapshot.hasChild("postProfileImage") && snapshot.hasChild("postPushID") &&
+                                            snapshot.hasChild("userName")) {
+                                        String UID = snapshot.child("uid").getValue(String.class);
+                                        if(UID.equals(currentUserId)){
+
+                                        if (snapshot.hasChild("postMessageImage")) {
+                                            String postMessageImage = snapshot.child("postMessageImage").getValue().toString();
+                                            Picasso.get().load(postMessageImage).into(holder.myPostMessageImage);
+                                        } else {
+                                            holder.myPostMessageImage.setVisibility(View.GONE);
+                                        }
+
+                                        final String retName = snapshot.child("userName").getValue(String.class);
+                                        final String retProfileImage = snapshot.child("postProfileImage").getValue(String.class);
+                                        final String retDateAndTime = snapshot.child("dateAndTime").getValue(String.class);
+                                        final String retText = snapshot.child("postMessageText").getValue(String.class);
+                                        final String retLikes = snapshot.child("likes").getValue(String.class);
+                                        final String retPostPushID = snapshot.child("postPushID").getValue(String.class);
+                                        // ret = retrieve
 
 
-                                    if (snapshot.hasChild("postMessageImage")) {
-                                        String postMessageImage = snapshot.child("postMessageImage").getValue().toString();
-                                        Picasso.get().load(postMessageImage).into(holder.myPostMessageImage);
-                                    }else{
-                                        holder.myPostMessageImage.setVisibility(View.GONE);
-                                    }
-
-                                    final String retName = snapshot.child("userName").getValue().toString();
-                                    final String retProfileImage = snapshot.child("postProfileImage").getValue().toString();
-                                    final String retDateAndTime = snapshot.child("dateAndTime").getValue().toString();
-                                    final String retText = snapshot.child("postMessageText").getValue().toString();
-                                    final String retLikes = snapshot.child("likes").getValue().toString();
-                                    final String retPostPushID = snapshot.child("postPushID").getValue().toString();
-                                    // ret = retrieve
+                                        holder.myPostPeopleName.setText(retName);
+                                        holder.myPostDateAndTime.setText(retDateAndTime);
+                                        holder.myPostMessageText.setText(retText);
+                                        holder.myPostLikes.setText(retLikes + " Likes");
 
 
-                                    holder.myPostPeopleName.setText(retName);
-                                    holder.myPostDateAndTime.setText(retDateAndTime);
-                                    holder.myPostMessageText.setText(retText);
-                                    holder.myPostLikes.setText(retLikes + " Likes");
+                                        if (!retProfileImage.equals("no_img")) {
+                                            Picasso.get().load(retProfileImage).into(holder.myPostProfileImage);
+                                        }
 
 
-                                    if(!retProfileImage.equals("no_img")){
-                                        Picasso.get().load(retProfileImage).into(holder.myPostProfileImage);
-                                    }
-
-                                    if(whosePostsUserId.equals(currentUserId)) {
                                         holder.myPostDelete.setVisibility(View.VISIBLE);
                                         holder.myPostDelete.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -130,11 +135,15 @@ public class PostsActivity extends AppCompatActivity {
                                                 builder.show();
                                             }
                                         });
+
+                                    }else {
+                                            holder.myPostConstraintLayout.setVisibility(View.GONE);
+                                        }
+                                }else {
+                                        holder.myPostConstraintLayout.setVisibility(View.GONE);
                                     }
 
-
-
-                                }else {
+                                } else {
                                     holder.myPostConstraintLayout.setVisibility(View.GONE);
                                 }
 

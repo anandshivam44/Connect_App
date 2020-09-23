@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.connect">
+    package="com.hncc.connect">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,18 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FollowingActivity"/>
-        <activity android:name=".CreatePostActivity" />
-        <activity android:name=".PeopleProfileActivity" />
-        <activity android:name=".ImageViewerActivity" />
-        <activity android:name=".PostsActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name="com.hncc.connect.FollowingActivity"/>
+        <activity android:name="com.hncc.connect.CreatePostActivity" />
+        <activity android:name="com.hncc.connect.PeopleProfileActivity" />
+        <activity android:name="com.hncc.connect.ImageViewerActivity" />
+        <activity android:name="com.hncc.connect.PostsActivity" />
+        <activity android:name="com.hncc.connect.SettingsActivity" />
         <activity
-            android:name=".HomeActivity"
+            android:name="com.hncc.connect.HomeActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.hncc.connect.SignUpActivity" />
+        <activity android:name="com.hncc.connect.LoginActivity" />
+        <activity android:name="com.hncc.connect.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
